@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# This utility will send your ssh shared key to a server
+# Usage $./sendsshkey vm-medium-52
+cat $HOME/.ssh/id_rsa.pub | ssh $1 "cat >> ~/.ssh/authorized_keys"

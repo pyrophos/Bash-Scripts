@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Cask is another package manager, but for apps
+
+#Install brew cask
+# TODO: Need to check if homebrew is already installed
+#brew install brew-cask
+brew install caskroom/cask/brew-cask
+
+# TODO: Might be nice to ask the user if they want to install a list of developer apps vs business/office apps
+
+# Regular Office apps
+brew cask install skype
+brew cask install google-chrome
+brew cask install firefox
+#brew cask install opera
+brew cask install thunderbird
+#brew cask install google-drive
+
+# Developer tools
+brew cask install intellij-idea
+
+# Virtualization tools
+brew cask install virtualbox
+brew cask install vagrant
+
+# Nice to have's for developers
+brew cask install iterm2
+
+echo "### ALL DONE! ###"

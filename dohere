@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#set -x
+
+# Utility that recursivly executes a command based on the provided pattern
+# Usage: dohere start-ds
+# Usage: dohere stop-*
+
+for thing in $( find . -iname $1 )
+do
+  echo "### Executing $thing ###"
+  $thing | parallel
+  echo "### Completed execution of $thing ###"
+  echo ""
+done
+

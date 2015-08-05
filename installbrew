@@ -1,0 +1,96 @@
+#!/bin/bash
+
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+xcode-select --install
+
+brew doctor
+brew update
+brew upgrade
+
+# Command line stuff
+brew install terminal-notifier
+brew install nmap
+brew install coreutils
+brew install gawk
+brew install openssl
+brew install openssh --with-brewed-openssl
+brew install wget
+brew install multitail
+brew install wireshark
+brew install colordiff
+brew install git
+brew install vim
+brew install ack
+brew install tree
+brew install htop-osx
+brew install httpie
+brew install dnstop
+
+brew install the_silver_searcher
+brew install the_platinum_searcher
+brew install mysql
+brew install rsync
+brew install mtr
+brew install iftop
+brew install curl
+brew install slurm
+brew install whois
+brew install less
+brew install diffutils
+brew install einutils
+brew install watch
+brew install tcptraceroute
+brew install poppler
+
+brew install gnu-indent --default-names
+brew install grep --default-names
+#brew install findutils --default-names
+brew install vim --override-system-vi
+brew install file-formula
+#brew install nano
+#brew install emacs
+
+# Completions
+brew install bash-completion
+brew install maven-completion
+brew install vagrant-completion
+
+#Development tools
+brew install homebrew/versions/subversion17
+brew install maven
+brew install moreutils
+brew install cheat
+brew install jmeter
+brew install perl
+
+brew install ant
+brew install p7zip
+brew install ezip
+brew install tomcat7
+brew install ldapvi
+
+brew tap homebrew/dupes
+brew install apple-gcc42
+
+# Just for fun
+brew install cowsay
+brew install fortune
+
+echo "Your fortune for today is..."
+fortune | cowsay
+
+
+# Python stuff
+brew install python
+brew install python3
+pip3 install --upgrade pip
+
+brew doctor
+brew prune
+brew cleanup
+
+terminal-notifier -title 'All Done!' -message 'Your Homebrew installations are finished!'
+
+# Usful pages:
+#http://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+VM_LOCATION="$HOME/VirtualBox\ VMs/ubdTraining"
+VM_NAME="ubdTraining"
+ISO_LOCATION="$HOME/Downloads/CentOS-6.6-x86_64-minimal.iso"
+OS_TYPE="Linux_64"
+MEMORY="1024"
+HD_SIZE=$[30*1024]
+
+# Configure base VM
+VBoxManage createvm --name $VM_NAME --register
+VBoxManage createhd --filename  $VM_LOCATION --size $HD_SIZE
+VBoxManage modifyvm $VM_NAME --ostype $OS_TYPE
+VBoxManage modifyvm $VM_NAME --memory $MEMORY
+
+echo "Configuring drives"
+VBoxManage storagectl $VM_NAME --name SATA --add sata --controller IntelAhci --bootable on
+
+VBoxManage storagectl $VM_NAME --name IDE --add ide --controller PIIX4 --bootable on
+VBoxManage storageattach $VM_NAME --storagectl IDE --port 0 --device 0 --type dvddrive --medium $ISO_LOCATION
+
+echo "Configuring network"
+VBoxManage modifyvm $VM_NAME --nic1 nat --nictype1 82540EM --cableconnected1 on
+VBoxManage modifyvm $VM_NAME --vrde on --vrdeport 5012 --vrdeaddress 192.168.1.6
+
+echo "Removing sharedfolder"
+vboxmanage sharedfolder remove $VM_NAME --name share-name
+
+echo "Starting up the vm"
+VBoxManage startvm $VM_NAME --type headless
+
+#VBoxManage controlvm $VM_NAME poweroff
+#vagrant package --output $VM_NAME.box --base $VM_NAME

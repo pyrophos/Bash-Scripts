@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# This find assumes that the svn_home contains the phrase svn in the folder name
+svn_home=$( find $HOME -maxdepth 1 -type d -iname  "*svn*" )
+
+echo "Copying files to  ${svn_home}/$USER"
+
+cd $svn_home/$USER
+
+echo "Getting files..."
+cp ~/bin/* .
+cp ~/.ssh/config .
+cp ~/.bash* .
+cp ~/.vimrc .
+
+echo "Adding all files to svn and committing them"
+svn add --force .
+svn commit -m "Backing up my files"
+svn up

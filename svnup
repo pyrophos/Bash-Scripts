@@ -1,0 +1,8 @@
+#!/bin/sh
+
+#svn_home=~/svn_repo
+svn_home=$( find ~ -maxdepth 2 -type d -iname  *svn* )
+echo "Updating svn repo found at ${svn_home}"
+
+cd $svn_home
+svn update *

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ brew list | awk -F '|' '{print "brew install " $1, $8}' > brewlist
+ chmod +x brewlist

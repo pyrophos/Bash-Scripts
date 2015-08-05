@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Update and clean up all the brew packages
+brew update
+brew doctor
+brew upgrade --all
+brew prune
+brew cleanup

@@ -1,0 +1,45 @@
+#!/bin/bash
+#set -x
+
+# Usage: makeplugin notificationManager
+# This will search for a plugin named notificationManager in the file name
+# and create the plugin from there.
+
+base=~/versions
+extension_name=$1
+
+
+# Find the server-sdk directory location
+directory_name=$( find $base -type d -iname unboundid-server-sdk-* )
+
+# Find the plugin
+example_src=$( find $directory_name/docs/example-src/ -iname *${extension_name}*.java )
+example_location=$directory_name/src/com/unboundid/directory/sdk/examples
+
+# Set the extension.properties file
+cat > $directory_name/extension.properties <<EOL
+extension.name=$extension_name
+extension.version=1.0
+extension.vendor.name=Unboundid
+extension.vendor.id=com.example
+extension.vendor.url=http://unboundid.com
+extension.vendor.contact=adam.poncy@unboundid.com
+include.source=true
+EOL
+
+# Delete the example_location in src
+if [ -d "$example_location" ]; then
+  echo "The src location already exists, deleting: $example_location"
+  rm -rf $example_location
+fi
+
+# Make the source directory structure
+mkdir -p $example_location
+
+# Copy the  example source file to the source directory structure
+cp $example_src $example_location
+
+cd $directory_name
+./build.sh
+
+#set +x
