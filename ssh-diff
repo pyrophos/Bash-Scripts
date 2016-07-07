@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -n "${1}" ] && [ -n "${3}" ]; then
+  ssh ${2} "cat $3" | diff "${1}" -
+else
+  echo "usage: ssh-diff local-file remote-host remote-file"; exit 1
+fi

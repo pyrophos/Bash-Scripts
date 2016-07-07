@@ -1,0 +1,36 @@
+#!/bin/sh
+
+HOST=x3550-06
+PORT=1389
+BASEDN=dc=example,dc=com
+NUMUSERS=10000
+INTERVAL=720
+
+if [ find . -maxdepth 0 -iname searchrate ]
+then
+  ./searchrate --hostname $HOST --port $PORT \
+    --bindDN uid=admin,dc=example,dc=com --bindPassword password \
+    --baseDN $BASEDN --scope sub \
+    --filter "(uid=user.[1-$NUMUSERS])" --attribute givenName \
+    --numIntervals $INTERVAL --numThreads 15 --ratePerSecond 30000 > result-code-0.out 2>&1 &
+
+  # Create No Such Entry (resultCode=32), which refers to the nonexistent search base DN
+  ./searchrate --hostname $HOST --port $PORT \
+    --bindDN uid=admin,dc=example,dc=com --bindPassword password \
+    --baseDN o=DoesNotExist --scope sub \
+    --filter "(uid=user.[1-$NUMUSERS])" --attribute givenName \
+    --numIntervals $INTERVAL --numThreads 6 --ratePerSecond 6000 > result-code-32.out 2>&1 &
+
+  # Create one Size Limit Exceeded (resultCode=4) result by using a small sizeLimit
+  ./ldapsearch --hostname $HOST --port $PORT --noPropertiesFile \
+    --bindDN uid=admin,dc=example,dc=com --bindPassword password \
+    --baseDN $BASEDN --searchScope sub --sizeLimit 5 \
+    "(uid=user.123*)" uid givenName > result-code-4.out 2>&1 &
+
+  # Create Object Class Violation (resultCode=65)
+  ./modrate --hostname $HOST --port $PORT \
+    --bindDN uid=admin,dc=example,dc=com --bindPassword password \
+    --entryDN "uid=user.[1-$NUMUSERS],ou=People,$BASEDN" \
+  --attribute doesNotExist --valueLength 8 \
+  --numIntervals $INTERVAL --numThreads 6 --ratePerSecond 6000 > result-code-65.out 2>&1 &
+fi

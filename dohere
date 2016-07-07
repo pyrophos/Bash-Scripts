@@ -5,11 +5,12 @@
 # Utility that recursivly executes a command based on the provided pattern
 # Usage: dohere start-ds
 # Usage: dohere stop-*
+# Usage: dohere dsconfig '--version'
 
 for thing in $( find . -iname $1 )
 do
   echo "### Executing $thing ###"
-  $thing | parallel
+  $thing $2 &
   echo "### Completed execution of $thing ###"
   echo ""
 done

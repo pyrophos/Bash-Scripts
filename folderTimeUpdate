@@ -1,0 +1,58 @@
+#!/bin/bash
+#set -x
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT_PARENT="$(dirname "${ROOT_DIR}")"
+DEBUG=0
+DIR_LIST=()
+
+function contains() {
+    local n=$#
+    local value=${!n}
+    for ((i=1;i < $#;i++)) {
+        if [ "${!i}" == "${value}" ]; then
+            return 0
+        fi
+    }
+    return 1
+}
+
+# Recursively go up the folder tree and change the folder modify date/time
+while read DIR_TO_CHANGE
+do
+  # DIR_TO_CHANGE is immutable, so copy its value so we can change it
+  CURRENT_DIR="${DIR_TO_CHANGE}"
+
+  # Determine the most recent file in the directory
+  #MOST_RECENT_FILE="$(find "${CURRENT_DIR}" -type f ! -name '.syncdb' ! -name '.DS_Store' -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")"
+  MOST_RECENT_FILE="$(find "${CURRENT_DIR}" -type f ! -name '.syncdb' ! -name '.DS_Store' -print0 | xargs -0 ls -t | head -1)"
+
+  # Move up the directory, updating directories if needed, until the root directory is found
+  while [ "${CURRENT_DIR}" != "${ROOT_DIR}" ]
+  do
+    # If the current directory is not empty
+    if [ "$(ls -A "${CURRENT_DIR}")" ]; then
+
+      #  If the directory has never been updated then update it, use the current Folder date to determine what to do
+      FLAG=$( contains "${DIR_LIST[@]}" "${CURRENT_DIR}" )
+      if [[ "${FLAG}" -ne 1 ]]; then
+          # Update the directory modify time with the most recent file
+          touch -r "${MOST_RECENT_FILE}" "${CURRENT_DIR}"
+          if [ ${DEBUG} == 1 ]; then echo "Updating ${CURRENT_DIR} with ${MOST_RECENT_FILE}"; fi
+          DIR_LIST+=(${CURRENT_DIR})
+      else
+        if test "${MOST_RECENT_FILE}" -nt "${CURRENT_DIR}" ; then
+          # Update the directory modify time with the most recent file
+          if [ ${DEBUG} == 1 ]; then echo "Updating ${CURRENT_DIR} with ${MOST_RECENT_FILE}"; fi
+          touch -r "${MOST_RECENT_FILE}" "${CURRENT_DIR}"
+          #DIR_LIST+=(${CURRENT_DIR})
+        fi
+      fi
+    else # Else, if the current directory is empty, skip processing and move on to the next directory.
+      if [ ${DEBUG} == 1 ]; then echo "Directory is empty: ${CURRENT_DIR}"; fi
+      break;
+    fi
+
+    # Navigate up a level
+    CURRENT_DIR="$(dirname "${CURRENT_DIR}")"
+  done
+done < <(find "${ROOT_DIR}" -type d )

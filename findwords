@@ -1,0 +1,9 @@
+#!/bin/sh
+
+word_list=('Synchronization Server' 'Identity Broker' 'Directory Proxy Server' 'Directory Server' 'Directory Suite')
+
+#for word in ${word_list[*]}
+# do
+#   find . -name '*.pdf' -exec sh -c 'pdftotext "{}" - | grep -B 2 -A 1--with-filename --label="{}" --color -oE "Synchronization\sServer"' \;
+#done
+find . -name '*.pdf' -exec sh -c 'pdftotext "{}" - | pt --context=2 "Synchronization Server"' \;

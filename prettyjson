@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Usage: prettyjson '{ "foo": "lorem", "bar": "ipsum" }'
+echo $1 | jq .

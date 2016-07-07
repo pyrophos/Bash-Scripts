@@ -1,0 +1,65 @@
+#!/bin/bash
+
+KEY_NAME="demoKey"
+KEY_LENGTH=4096
+KEY_VALID_LENGTH=2
+KEY_SUBJECT="/C=US/ST=Texas/L=Austin/O=UnboundID/OU=UnboundID/CN=localhost/emailAddress=sales@unboundid.com/serialNumber=0123456/"
+
+# Use > 0 to consume one or more arguments per pass in the loop
+while [[ $# > 0 ]]
+do
+key="$1"
+case $key in
+    -n|--keyname)
+    KEY_NAME="$2"
+    shift # past argument
+    ;;
+    -k|--keylength)
+    KEY_LENGTH="$2"
+    shift # past argument
+    ;;
+    -v|--validlength)
+    KEY_VALID_LENGTH="$2"
+    shift # past argument
+    ;;
+    -s|--subject)
+    KEY_SUBJECT="$2"
+    shift # past argument
+    ;;
+    -h|--help|-?)
+    echo ""
+    echo "makekeypair creates a directory and fills it with "
+    echo "the desired key pair files."
+    echo ""
+    echo "Example execution:"
+    echo "   makekeypair -n demokey -k 2048 -v 1w"
+    echo ""
+    echo "arguments:"
+    echo "   -n, --keyname     | The name of the key"
+    echo "   -k, --keylength   | The length of the key"
+    echo "   -v, --validlength | The valid length in days of the key"
+    echo "   -s, --subject     | The subject of the key"
+    echo ""
+    shift # past argument
+    exit 1
+    ;;
+esac
+shift # past argument or value
+done
+
+NAME=${KEY_NAME}_${KEY_LENGTH}
+mkdir ${NAME}
+cd ${NAME}
+
+#openssl genrsa -out ${NAME}.key ${KEY_LENGTH}
+#openssl req -new -key ${NAME}.key -out ${NAME}.csr -subj "/EMAILADDRESS=adam.poncy@unboundid.com/C=US/ST=Texas/L=Austin/O=UnboundID/OU=UnboundID/CN=localhost/serialNumber=0123456"
+#openssl x509 -req -days ${KEY_VALID_LENGTH} -in ${NAME}.csr -signkey ${NAME}.key -out ${NAME}.crt
+#openssl pkcs12 -keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES -export -in ${NAME}.crt -inkey ${NAME}.key -out ${NAME}.pfx -name ${NAME}
+#openssl pkcs12 -in ${NAME}.pfx -nocerts -nodes -out ${NAME}-pkcs12.pem
+#openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAME}-pkcs12.pem -out ${NAME}-pkcs8.pem -nocrypt
+
+# Shorter version
+openssl genrsa -out ${NAME}.key ${KEY_LENGTH}
+openssl req -new -key ${NAME}.key -out ${NAME}.csr -subj ${KEY_SUBJECT}
+openssl x509 -req -days ${KEY_VALID_LENGTH} -in ${NAME}.csr -signkey ${NAME}.key -out ${NAME}.crt
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAME}.key -out ${NAME}.pem -nocrypt

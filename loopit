@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Usage
+# loopit 'll /ds/ds1/logs/'
+# loopit 'll /ds/ds1/logs/' 10
+
+if [ $# -eq 0 ]
+  then
+    echo "No arguments supplied"
+fi
+
+if [ $# -eq 1 ]
+  then
+  command=$1
+  time=2
+fi
+
+if [ $# -eq 2 ]
+  then
+  command=$1
+  time=$2
+fi
+echo "Loopit args:"
+echo "  command=${command}"
+echo "  time=${time}s"
+while true
+do
+  echo ""
+  echo date
+  ${command}
+  sleep ${time}
+done

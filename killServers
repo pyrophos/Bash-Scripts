@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# The order of entries matters, the for loop will go through these sequentially
+serverNames=( "IdentityBroker" "SyncronizationServer" "MetricsServer" "postgres" "DirectoryProxyServer" "DirectoryServer" "RemoteMavenServer" )
+
+for i in ${serverNames}
+do
+ pkill -f ${i} 
+ wait
+done

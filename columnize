@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Usage
+# columnize , one,two,three
+# output:
+# one
+# two
+# three
+
+if [ $# -eq 0 ]
+  then
+    echo "No arguments supplied"
+fi
+
+if [ $# -eq 1 ]
+  then
+    delimiter=","
+fi
+
+if [ $# -eq 2 ]
+  then
+    delimiter=$1
+fi
+
+echo ""
+arr=$(echo $2 | tr ${delimiter} "\n")
+for x in $arr
+  do
+        echo "$x"
+        done

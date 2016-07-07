@@ -1,0 +1,11 @@
+#!/bin/bash
+test $# -eq 2 || return 2
+test -e "$1" || return 3
+test -e "$2" || return 3
+
+lname="$(basename "$1")"
+rname="$(basename "$2")"
+
+( cd "$(dirname "$1")" && mv -T "$lname" ".${rname}" ) && \
+( cd "$(dirname "$2")" && mv -T "$rname" "$lname" ) && \
+( cd "$(dirname "$1")" && mv -T ".${rname}" "$rname" )

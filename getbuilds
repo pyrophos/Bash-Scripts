@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# Script activity switches
+uncompress=false
+delete=true
+verbose=false
+build_type=snapshot
+base=~/versions
+z='-'
+
+################################
+# Version numbers and products to download
+################################
+versions=( "5.2.0.2" "5.3.0.0" )
+products=( "ds" "proxy" "sync" "metrics" "broker" "ldapsdk" "server-sdk")
+
+################################
+# Get the products for a version
+################################
+function getProducts ()
+{
+  version=$1
+  # the getbuild.py utility must run within a directory
+  cd $base/$version
+
+  # For this version, get the products
+  echo "Getting builds for $version"
+  for product in ${products[*]}
+  do
+    printf "%0.s#" {1..10}
+    echo ""
+    echo " $z $product"
+
+    getbuild.py $build_type $product $version
+
+    # Determine if files should be uncompressed or not
+    if [ "$uncompress" = true ]; then
+      echo " $z Uncompressing files."
+      unzip -oq '*.zip'
+    fi
+    echo "$version : $product complete."
+  done
+}
+
+################################
+# Main
+################################
+
+# Make the base if it doesn't already exist
+if [ ! -d "$base" ]
+then
+  echo "$z The directory $base does not exist."
+  echo "$z Creating $base"
+  mkdir -p $base
+fi
+
+# For each version in the versions list get the products
+for v in ${versions[*]}
+do
+  # Make the version directory if it doesnt exist already
+  if [ ! -d "$base/$v" ]
+  then
+    mkdir -p $base/$v
+  fi
+
+  # Delete old files before retrieving more
+  if [ "$delete" = true ]; then
+    rm -rf $base/$v/*.zip
+  fi
+
+  # Get all the products for the version
+  if [ "$verbose" = true ]; then
+    getProducts $v &
+  else
+    ( getProducts $v & ) >> /dev/null 2>&1 &
+  fi
+done
+wait

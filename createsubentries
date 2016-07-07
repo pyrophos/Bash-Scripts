@@ -1,0 +1,80 @@
+#! /bin/bash
+
+date=$(date +"%Y%m%d%H%M%S")
+attribute=description
+changet=modify
+outputfile=subentryfile$date.ldif
+num_levels=50
+num_entries_per_level=10
+
+count=0
+function subentry()
+{
+  if [[ $1 -gt $num_levels ]]
+  then
+    exit 0
+  fi
+
+  if [[ $1 -eq 0 ]]
+  then
+    echo "dn: uid=subentry.$1,ou=People,dc=example,dc=com" >> $outputfile
+    echo "objectClass: top" >> $outputfile
+    echo "objectClass: person" >> $outputfile
+    echo "objectClass: organizationalPerson" >> $outputfile
+    echo "objectClass: inetOrgPerson" >> $outputfile
+    echo "sn: subentry.$1" >> $outputfile
+    echo "cn: subentry.$1" >> $outputfile
+    echo "uid: subentry.$1" >> $outputfile
+    echo "mail: test" >> $outputfile
+    echo "initials: test" >> $outputfile
+    echo "homePhone: +1 111 111 111" >> $outputfile
+    echo "pager: +1 111 111 111" >> $outputfile
+    echo "givenName: test" >> $outputfile
+    echo "employeeNumber: 1" >> $outputfile
+    echo "telephoneNumber: +1 111 111 1111" >> $outputfile
+    echo "mobile: +1 111 111 1111" >> $outputfile
+    echo "userPassword: password" >> $outputfile
+    echo "description: test" >> $outputfile
+    echo "street: test" >> $outputfile
+    echo "st: TX" >> $outputfile
+    echo "l: Test" >> $outputfile
+    echo "postalCode: 39160" >> $outputfile
+    echo "postalAddress: test" >> $outputfile
+    echo "" >> $outputfile
+  fi
+
+  if [[ $1 -gt 0 ]] && [[ $1 -lt $num_levels ]]
+  then
+    for num in `seq $num_entries_per_level`
+    do
+      echo "dn: uid=subentry.$num,subentry.$(($1 - 1)),ou=People,dc=example,dc=com" >> $outputfile
+      echo "objectClass: top" >> $outputfile
+      echo "objectClass: person" >> $outputfile
+      echo "objectClass: organizationalPerson" >> $outputfile
+      echo "objectClass: inetOrgPerson" >> $outputfile
+      echo "sn: subentry.$num" >> $outputfile
+      echo "cn: subentry.$num" >> $outputfile
+      echo "uid: subentry.$num" >> $outputfile
+      echo "mail: test" >> $outputfile
+      echo "initials: test" >> $outputfile
+      echo "homePhone: +1 111 111 111" >> $outputfile
+      echo "pager: +1 111 111 111" >> $outputfile
+      echo "givenName: test" >> $outputfile
+      echo "employeeNumber: 1" >> $outputfile
+      echo "telephoneNumber: +1 111 111 1111" >> $outputfile
+      echo "mobile: +1 111 111 1111" >> $outputfile
+      echo "userPassword: password" >> $outputfile
+      echo "description: test" >> $outputfile
+      echo "street: test" >> $outputfile
+      echo "st: TX" >> $outputfile
+      echo "l: Test" >> $outputfile
+      echo "postalCode: 39160" >> $outputfile
+      echo "postalAddress: test" >> $outputfile
+      echo "" >> $outputfile
+    done
+  fi
+
+  subentry $(($1 + 1))
+}
+
+subentry $count

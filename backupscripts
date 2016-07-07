@@ -10,8 +10,10 @@ cd $svn_home/$USER
 echo "Getting files..."
 cp ~/bin/* .
 cp ~/.ssh/config .
-cp ~/.bash* .
+cp ~/.bash_profile .
+cp ~/.bash_aliases .
 cp ~/.vimrc .
+
 
 echo "Adding all files to svn and committing them"
 svn add --force .
