@@ -2,8 +2,7 @@
 
 KEY_NAME="demoKey"
 KEY_LENGTH=4096
-KEY_VALID_LENGTH=2
-KEY_SUBJECT="/C=US/ST=Texas/L=Austin/O=UnboundID/OU=UnboundID/CN=localhost/emailAddress=sales@unboundid.com/serialNumber=0123456/"
+KEY_VALID_LENGTH=1
 
 # Use > 0 to consume one or more arguments per pass in the loop
 while [[ $# > 0 ]]
@@ -22,10 +21,6 @@ case $key in
     KEY_VALID_LENGTH="$2"
     shift # past argument
     ;;
-    -s|--subject)
-    KEY_SUBJECT="$2"
-    shift # past argument
-    ;;
     -h|--help|-?)
     echo ""
     echo "makekeypair creates a directory and fills it with "
@@ -37,8 +32,7 @@ case $key in
     echo "arguments:"
     echo "   -n, --keyname     | The name of the key"
     echo "   -k, --keylength   | The length of the key"
-    echo "   -v, --validlength | The valid length in days of the key"
-    echo "   -s, --subject     | The subject of the key"
+    echo "   -v, --validlength | The valid length of the key"
     echo ""
     shift # past argument
     exit 1
@@ -60,6 +54,6 @@ cd ${NAME}
 
 # Shorter version
 openssl genrsa -out ${NAME}.key ${KEY_LENGTH}
-openssl req -new -key ${NAME}.key -out ${NAME}.csr -subj ${KEY_SUBJECT}
+openssl req -new -key ${NAME}.key -out ${NAME}.csr -subj "/C=US/ST=Texas/L=Austin/O=UnboundID/OU=UnboundID/CN=localhost/emailAddress=sales@unboundid.com/serialNumber=0123456/" -nodes
 openssl x509 -req -days ${KEY_VALID_LENGTH} -in ${NAME}.csr -signkey ${NAME}.key -out ${NAME}.crt
 openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAME}.key -out ${NAME}.pem -nocrypt
