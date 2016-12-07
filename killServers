@@ -1,10 +1,8 @@
 #!/bin/bash
+#set -x
 
 # The order of entries matters, the for loop will go through these sequentially
-serverNames=( "IdentityBroker" "SyncronizationServer" "MetricsServer" "postgres" "DirectoryProxyServer" "DirectoryServer" "RemoteMavenServer" )
-
-for i in ${serverNames}
+for i in "AuthRate" "SearchAndModRate" "IdentityBroker" "SynchronizationServer" "MetricsServer" "MetricsEngine" "DirectoryProxyServer" "DirectoryServer" "RemoteMavenServer" "postgres"
 do
- pkill -f ${i} 
- wait
+ sudo pkill -f $i
 done

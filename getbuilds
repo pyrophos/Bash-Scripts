@@ -11,8 +11,8 @@ z='-'
 ################################
 # Version numbers and products to download
 ################################
-versions=( "5.2.0.2" "5.3.0.0" )
-products=( "ds" "proxy" "sync" "metrics" "broker" "ldapsdk" "server-sdk")
+versions=( "6.1.0.0" )
+products=( "ds" "proxy" "sync" "metrics" "broker" "ldapsdk" "server-sdk" "ssam" )
 
 ################################
 # Get the products for a version
@@ -39,6 +39,7 @@ function getProducts ()
       unzip -oq '*.zip'
     fi
     echo "$version : $product complete."
+    terminal-notifier -title 'Getbuilds' -message "Completed $version $product"
   done
 }
 
@@ -57,15 +58,16 @@ fi
 # For each version in the versions list get the products
 for v in ${versions[*]}
 do
+  # Delete old files before retrieving more
+  if [ "$delete" = true ]; then
+    rm -rf $base/$v
+    #rm -rf $base/$v/*.zip
+  fi
+
   # Make the version directory if it doesnt exist already
   if [ ! -d "$base/$v" ]
   then
     mkdir -p $base/$v
-  fi
-
-  # Delete old files before retrieving more
-  if [ "$delete" = true ]; then
-    rm -rf $base/$v/*.zip
   fi
 
   # Get all the products for the version

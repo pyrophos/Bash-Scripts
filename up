@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Usage: up 4 navigates up 4 directories
+ups=""
+for i in $(seq "$1")
+do
+  cd ../
+  #ups=$ups"../"
+done
+#cd $ups

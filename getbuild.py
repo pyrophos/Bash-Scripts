@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-""""Retrieves UnboundID builds from the Nexus repository.
+""""Retrieves Ping Identity builds from the Nexus repository.
 Should work with Python 2.4, which means it should run on Solaris 10 and CentOS 5.5.
 
 NOTE: After making changes, please ensure that getbuildtest passes.
@@ -210,7 +210,8 @@ class RepositoryTypes(object):
   INTERNAL_PRODUCTS = [
       "qa-tools", "texas-mgmt-node",
       "test-node", "test-node-plugins",
-      "broker-test-tool", "ssam", "connecticut"
+      "broker-test-tool", "ssam", "connecticut",
+      "management-console"
   ]
 
   PRODUCTS = PUBLIC_PRODUCTS + INTERNAL_PRODUCTS
@@ -263,7 +264,7 @@ class RepositoryURI(object):
     version = ""
 
     # Don't default to a GA build if the product is internal or ldapsdk, scim-sdk, or scim-ri
-    default_to_ga = self.product in set(RepositoryTypes.PUBLIC_PRODUCTS).difference({'ldapsdk', 'scim-sdk', 'scim-ri'})
+    default_to_ga = self.product in set(RepositoryTypes.PUBLIC_PRODUCTS).difference(set(['ldapsdk', 'scim-sdk', 'scim-ri']))
 
     if self.version:
       version = self.version
@@ -315,7 +316,8 @@ class RepositoryURI(object):
         "test-node": "com/unboundid/qa/florida/test-node",
         "test-node-plugins": "com/unboundid/qa/florida/test-node-plugins",
         "broker-test-tool": "com/unboundid/qa/tools/broker/broker-test-tool",
-        "ssam": "com/unboundid/webapp/ssam"
+        "ssam": "com/unboundid/webapp/ssam",
+        "management-console": "com/unboundid/webapp/management-console"
       },
 
       # Special path handling for public products.
@@ -381,6 +383,8 @@ class RepositoryURI(object):
 class Repository(object):
   """A Nexus build artifact repository."""
 
+  VERSION_RX = r"((\d+\.)+(\d+))(-((SNAPSHOT)|((ce|se)-SNAPSHOT)|((c|s)e)|(GA)|(RC\d+)))?$"
+
   def __init__(self, build_type, repository_type, organization="UnboundID"):
     self.build_type = build_type
     if self.build_type not in RepositoryTypes.BUILD_TYPES:
@@ -396,7 +400,7 @@ class Repository(object):
   def _find_version(text):
     """Attempts to match on a version string. Returns an re.Match object where
     group 1 is the version number and group 5 is the build type."""
-    rx = re.compile(r"((\d\.)+(\d)+)(-((SNAPSHOT)|((ce|se)-SNAPSHOT)|((c|s)e)|(GA)|(RC\d+)))?$")
+    rx = re.compile(Repository.VERSION_RX)
     return rx.search(text)
 
   def get_versions(self, product, quiet=False):
@@ -650,9 +654,9 @@ def _usage():
     "  -p, --print-url-only     Prints the artifact URL without downloading it.\n" + \
     "  -f, --from YYYY-MM-DD    Downloads the latest build from the given date.\n\n" + \
     "If you run this script as 'getalubuild', it will retrieve an \n" + \
-    "Alcatel-Lucent build instead of an UnboundID build.\n" + \
-    "Running this script as 'getrpmbuild' will cause it to retrieve an\n" + \
-    "UnboundID RPM build instead of a zip.\n"
+    "Alcatel-Lucent build instead of a Ping Identity build.\n" + \
+    "Running this script as 'getrpmbuild' will cause it to retrieve a\n" + \
+    "Ping Identity RPM build instead of a zip.\n"
 
   return usage
 

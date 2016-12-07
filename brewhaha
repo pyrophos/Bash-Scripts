@@ -4,6 +4,6 @@
 sudo chown -R $(whoami):admin /usr/local
 brew update
 brew doctor
-brew upgrade --all
+brew upgrade
 brew prune
 brew cleanup

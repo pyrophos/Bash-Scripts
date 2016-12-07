@@ -1,11 +1,68 @@
-brew install ack 
+brew tap homebrew/versions
+
+brew install binutils
+brew install diffutils
+brew install ed --with-default-names
+brew install findutils --with-default-names
+brew install gawk
+brew install gnu-indent --with-default-names
+brew install gnu-sed --with-default-names
+brew install gnu-tar --with-default-names
+brew install gnu-which --with-default-names
+brew install gnutls
+brew install grep --with-default-names
+brew install gzip
+brew install screen
+brew install watch
+brew install wdiff --with-gettext
+brew install eget
+brew install emacs
+brew install gpatch
+brew install less
+brew install m4
+brew install make
+brew install nano
+brew install file-formula
+brew install git
+brew install openssh
+brew install perl
+brew install python
+brew install rsync
+brew install svn
+brew install unzip
+brew install vim --override-system-vi
+brew install macvim --override-system-vim --custom-system-icons
+
+brew install homebrew/dupes/ack
+brew install homebrew/dupes/grep
+brew install homebrew/dupes/screen
+brew install homebrew/dupes/nano
+brew install homebrew/dupes/openldap
+brew install homebrew/dupes/srm
+brew install homebrew/dupes/unzip
+brew install homebrew/dupes/units
+brew install homebrew/dupes/less
+brew install homebrew/dupes/gzip
+brew install homebrew/dupes/diffutils
+brew install homebrew/dupes/ed
+brew install homebrew/dupes/diffstat
+brew install homebrew/dupes/diffutils
+brew install homebrew/dupes/expect
+brew install homebrew/dupes/file-formula
+brew install homebrew/dupes/gperf
+brew install homebrew/dupes/openssh
+brew install homebrew/dupes/rsync
+brew install homebrew/dupes/tcl-tk
+brew install homebrew/dupes/xar
+brew install homebrew/dupes/apple-gcc42
+
 brew install afl-fuzz 
 brew install akka 
 brew install ansiweather 
 brew install ant 
+brew install apache-spark 
 brew install apg 
 brew install app-engine-python 
-brew install apple-gcc42 
 brew install atk 
 brew install augeas 
 brew install autoconf 
@@ -27,6 +84,7 @@ brew install chronograf
 brew install chuck 
 brew install cmake 
 brew install codequery 
+brew install coffeescript 
 brew install colordiff 
 brew install colortail 
 brew install coreutils 
@@ -42,8 +100,8 @@ brew install diffutils
 brew install dnstop 
 brew install dnstracer 
 brew install docker 
+brew install drip 
 brew install dynamodb-local 
-brew install ed 
 brew install eigen 
 brew install elasticsearch 
 brew install elixir 
@@ -141,8 +199,8 @@ brew install little-cms2
 brew install lua 
 brew install lz4 
 brew install lzip 
+brew install macvim 
 brew install maven-completion 
-brew install meld 
 brew install minizinc 
 brew install mongodb 
 brew install moreutils 
@@ -171,6 +229,7 @@ brew install pango
 brew install pcre 
 brew install pdfgrep 
 brew install peco 
+brew install perl 
 brew install pip-completion 
 brew install pixman 
 brew install pkg-config 
@@ -185,21 +244,26 @@ brew install pygobject3
 brew install pygtk 
 brew install pygtksourceview 
 brew install pyqt 
+brew install pyqt5 
 brew install python 
 brew install python3 
 brew install qscintilla2 
 brew install qt 
+brew install qt5 
 brew install rarian 
 brew install readline 
 brew install redis 
 brew install rename 
 brew install rethinkdb 
+brew install ripgrep 
 brew install rsync 
+brew install ruby 
 brew install scala 
 brew install scamper 
 brew install scons 
 brew install screen 
 brew install sfk 
+brew install shared-mime-info 
 brew install shellcheck 
 brew install siege 
 brew install since 
@@ -211,32 +275,32 @@ brew install snappy
 brew install sntop 
 brew install sonar 
 brew install sonar-completion 
+brew install sonarqube 
 brew install source-highlight 
 brew install speedread 
 brew install sphinx 
 brew install sqlite 
 brew install srm 
 brew install stress 
-brew install subversion17 
 brew install syncthing 
 brew install tcptraceroute 
 brew install telegraf 
 brew install terminal-notifier 
-brew install the_platinum_searcher 
 brew install the_silver_searcher 
+brew install timewarrior 
 brew install tmux 
 brew install tracebox 
 brew install tree 
-brew install treeline 
 brew install uncrustify 
 brew install unixodbc 
 brew install unp 
 brew install unrar 
+brew install utf8proc 
 brew install vagrant-completion 
 brew install vegeta 
 brew install vim 
+brew install voldemort 
 brew install watch 
 brew install wdiff 
-brew install wget 
 brew install wxmac 
 brew install xz 

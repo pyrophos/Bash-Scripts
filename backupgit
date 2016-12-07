@@ -1,0 +1,16 @@
+#!/bin/sh
+# set -x
+
+# The following file writes the git repo URLs found by a find
+# command starting from the home directory to the file at FILE_LOC
+
+FILE_NAME=gitrepos.bak
+RUN_LOC=`pwd`
+FILE_LOC=${RUN_LOC}/${FILE_NAME}
+
+touch "${FILE_LOC}"
+echo "Backing up git repos to ${FILE_LOC}"
+find ~ -maxdepth 3 -type d -iname .git | while read line; do
+  cd "${line}"
+  git config --get remote.origin.url >> "${FILE_LOC}"
+done
