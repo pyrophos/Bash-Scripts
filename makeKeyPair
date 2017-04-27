@@ -45,14 +45,6 @@ NAME=${KEY_NAME}_${KEY_LENGTH}
 mkdir ${NAME}
 cd ${NAME}
 
-#openssl genrsa -out ${NAME}.key ${KEY_LENGTH}
-#openssl req -new -key ${NAME}.key -out ${NAME}.csr -subj "/EMAILADDRESS=adam.poncy@unboundid.com/C=US/ST=Texas/L=Austin/O=UnboundID/OU=UnboundID/CN=localhost/serialNumber=0123456"
-#openssl x509 -req -days ${KEY_VALID_LENGTH} -in ${NAME}.csr -signkey ${NAME}.key -out ${NAME}.crt
-#openssl pkcs12 -keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES -export -in ${NAME}.crt -inkey ${NAME}.key -out ${NAME}.pfx -name ${NAME}
-#openssl pkcs12 -in ${NAME}.pfx -nocerts -nodes -out ${NAME}-pkcs12.pem
-#openssl pkcs8 -topk8 -inform PEM -outform PEM -in ${NAME}-pkcs12.pem -out ${NAME}-pkcs8.pem -nocrypt
-
-# Shorter version
 openssl genrsa -out ${NAME}.key ${KEY_LENGTH}
 openssl req -new -key ${NAME}.key -out ${NAME}.csr -subj "/C=US/ST=Texas/L=Austin/O=UnboundID/OU=UnboundID/CN=localhost/emailAddress=sales@unboundid.com/serialNumber=0123456/" -nodes
 openssl x509 -req -days ${KEY_VALID_LENGTH} -in ${NAME}.csr -signkey ${NAME}.key -out ${NAME}.crt

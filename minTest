@@ -1,5 +1,0 @@
-#!/bin/bash
-
-proxyserver1/bin/search-and-mod-rate --hostname localhost --port 4636 --usessl --trustall --bindDN 'cn=directory manager' --bindPassword password --baseDN ou=people,dc=example,dc=com --scope sub --filter "(uid=user.[1-2000000])" --attribute givenName --attribute l --attribute mail --modifyAttribute sn --valueLength 6 --characterSet abcdefgh --ratepersecond 250 > proxytest.out 2>&1 &
-
-proxyserver1/bin/authrate --hostname localhost --port 4636 --usessl --trustall --bindDN 'cn=directory manager' --bindPassword password --baseDN dc=example,dc=com --scope sub --filter "(uid=user.[1-1000000])" --credentials password --ratepersecond 250 > authrate.out 2>&1 &

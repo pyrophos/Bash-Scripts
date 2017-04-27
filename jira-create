@@ -1,0 +1,15 @@
+#!/bin/bash
+
+FILENAME="issues.csv"
+HEADINGS=('Summary', 'Issue Type', 'Assignee', 'Reporter', 'Description')
+
+
+touch $FILENAME
+
+makeHeadings() {
+  temp=""
+  for column in ${HEADINGS[*]}
+  do
+    ${temp}+=${column}
+  done
+}

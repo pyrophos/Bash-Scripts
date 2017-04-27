@@ -1,8 +1,0 @@
-#!/bin/bash
-#set -x
-
-# The order of entries matters, the for loop will go through these sequentially
-for i in "AuthRate" "SearchAndModRate" "IdentityBroker" "SynchronizationServer" "MetricsServer" "MetricsEngine" "DirectoryProxyServer" "DirectoryServer" "RemoteMavenServer" "postgres"
-do
- sudo pkill -f $i
-done

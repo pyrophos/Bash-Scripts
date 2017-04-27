@@ -1,0 +1,53 @@
+#!/bin/bash
+
+ORIGIN=`pwd`
+
+function vtup() {
+  cd ${VT}
+  RAILS_ENV=test bundle exec rails s
+  cd ${ORIGIN}
+}
+
+function vtrebuild() {
+  cd ${VT}
+  bundle install
+  rake db:drop
+  RAILS_ENV=test rake db:create
+  RAILS_ENV=test bundle exec rake db:schema:load
+  RAILS_ENV=test bundle exec rake db:seed
+  #RAILS_ENV=test rake db:reset
+  cd ${ORIGIN}
+}
+
+function gatewayup() {
+  cd ${GATEWAY}/gateway-core/
+  java -Xmx512m \
+    -XX:MaxMetaspaceSize=128m \
+    -Duser.timezone=GMT \
+    -Dchargeio.boot.encryption.disabled=true \
+    -Dspring.profiles.active=dev \
+    -jar target/gateway.jar target/gateway-dev.yml
+}
+
+function gatewayrebuild() {
+  cd ${GATEWAY}/gateway-core/src/main/db/mysql/
+  sh -x ./create_db.sh \
+    --drop --host localhost \
+    --dba_user root \
+    --dba_passwd '' \
+    --db_name gw_test \
+    --db_user chargeio \
+    --db_passwd chargeio \
+    --testdata
+  cd ${ORIGIN}
+}
+
+function vtnew() {
+  vtrebuild
+  vtup
+}
+
+function gatewaynew() {
+  gatewayrebuild
+  gatewayup
+}

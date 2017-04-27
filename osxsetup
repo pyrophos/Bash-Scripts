@@ -1,0 +1,54 @@
+#!/bin/bash
++x
+
+xcode-select --install
+
+echo "Installing homebrew..."
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+echo "Installing gpg2..."
+brew install gpg2
+gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+
+echo "Installing rvm..."
+\curl -sSL https://get.rvm.io | bash -s stable
+source ~/.bash_profile
+
+echo "Checking that rvm is installed..."
+type rvm | head -1 | grep 'rvm is a function' &> /dev/null
+if [ $? != 0 ]; then
+  echo "There was a problem with installing rvm"
+fi
+
+echo "Installing system requirements for ruby..."
+rvm requirements
+
+echo "Installing Ruby..."
+rvm install 2.3.1
+ruby -v
+rvm use 2.3.1@global
+
+echo "Installing bundler..."
+gem install bundler
+# Allow bundler to use multiple cores
+number_of_cores=$(sysctl -n hw.ncpu)  
+bundle config --global jobs $((number_of_cores - 1)) 
+
+echo "Installing mysql..."
+brew install mysql
+ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
+brew services list
+
+echo "Installing ImageMagic..."
+brew install imagemagick
+
+echo "Installing latest java..."
+brew install caskroom/cask/brew-cask
+brew cask install java
+echo "Checking java version..."
+java -version
+
+echo "Installing ElasticSearch..."
+brew install https://raw.githubusercontent.com/Homebrew/homebrew/c8a37bc1627ae4d417058ffe14aaec9ab9ac391b/Library/Formula/elasticsearch.rb
+
+echo "Done"
